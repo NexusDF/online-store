@@ -25,7 +25,11 @@
           <td>
             <label class="rate">
               Курс рубля
-              <input type="text" style="width: 60px" v-model="currentRate" />
+              <input
+                type="text"
+                style="width: 60px"
+                v-model.lazy="currentRate"
+              />
               <svg
                 width="24"
                 class="equal"
