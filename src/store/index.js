@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import convertToRUB from "@/utils/converter";
+import getActualRate from "@/common/getCurrentRate";
 
 Vue.use(Vuex);
 
@@ -51,9 +52,6 @@ export default new Vuex.Store({
       }
     },
     changeRate(state, newRate) {
-      if (typeof newRate === "string") {
-        newRate = newRate.replaceAll(/[a-zA-Z]/g, "");
-      }
       // Изменяю текущий статус валюты (поднялась или опустилась)
       if (state.rate === newRate) {
         state.rateState = "equal";
@@ -65,6 +63,13 @@ export default new Vuex.Store({
       state.rate = parseFloat(newRate) || state.rate;
     },
   },
-  actions: {},
+  actions: {
+    synchronizeRate(context, deltaTime) {
+      setInterval(async () => {
+        const rate = await getActualRate();
+        context.commit("changeRate", rate.Value);
+      }, deltaTime);
+    },
+  },
   modules: {},
 });

@@ -10,20 +10,17 @@
 import GroupList from "@/components/GroupList";
 import CartList from "@/components/CartList";
 import getProducts from "@/common/getProducts";
-import getActualRate from "@/common/getCurrentRate";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
   name: "App",
   created() {
+    const timeToUpdateRate = 15 * 1000;
     // Достаю данные из файла data.json и names.json
     this.productsGroups = getProducts();
 
     // Получаю текущий курс валюты
-    setInterval(async () => {
-      const rate = await getActualRate();
-      this.changeRate(rate.Value);
-    }, 15 * 1000);
+    this.synchronizeRate(timeToUpdateRate);
   },
   components: {
     GroupList,
@@ -37,6 +34,7 @@ export default {
   methods: {
     // Достаю мутация для изменения курса
     ...mapMutations(["changeRate"]),
+    ...mapActions(["synchronizeRate"]),
   },
 };
 </script>
