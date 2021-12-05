@@ -66,6 +66,7 @@ export default {
     removedDuplicates() {
       return new Set(this.cart.items);
     },
+    // Решил сделать через вычисляемое свойство
     currentRate: {
       get() {
         return this.rate;

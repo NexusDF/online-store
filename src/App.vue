@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!--Для демострации некоторые задачи решил при помощи Vuex -->
     <GroupList class="group-list" :groups="productsGroups" />
     <CartList class="cart-list" />
   </div>
@@ -15,8 +16,10 @@ import { mapMutations } from "vuex";
 export default {
   name: "App",
   created() {
+    // Достаю данные из файла data.json и names.json
     this.productsGroups = getProducts();
 
+    // Получаю текущий курс валюты
     setInterval(async () => {
       const rate = await getActualRate();
       this.changeRate(rate.Value);
@@ -32,6 +35,7 @@ export default {
     };
   },
   methods: {
+    // Достаю мутация для изменения курса
     ...mapMutations(["changeRate"]),
   },
 };

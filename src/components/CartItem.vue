@@ -40,6 +40,7 @@ export default {
     },
   },
   watch: {
+    // Слежу за изменениями общей суммы на покупку
     "product.totalAmountToBuy"(newValue) {
       const result = newValue.replaceAll(/[a-zA-Z]/g, "") || 1;
       this.product.totalAmountToBuy = Math.max(

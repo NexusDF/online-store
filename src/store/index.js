@@ -14,18 +14,21 @@ export default new Vuex.Store({
     rateState: "equal",
   },
   getters: {
+    // Получаю общую сумму товаров
     getTotalAmount(state) {
       if (!state.cart.items.length) return 0;
       return state.cart.items
         .map((p) => p.totalAmountToBuy * p.price)
         .reduce((total, p) => total + p);
     },
+    // Конвертирую доллары в рубли
     getTotalAmountOnRUB(state, getters) {
       return convertToRUB(getters.getTotalAmount, state.rate);
     },
   },
   mutations: {
     addProductToCart(state, product) {
+      // Ищу уже готовый у покупке товар в списке покупок
       const productIsReady = state.cart.items.find(
         (p) => p.uid === product.uid
       );
@@ -51,6 +54,7 @@ export default new Vuex.Store({
       if (typeof newRate === "string") {
         newRate = newRate.replaceAll(/[a-zA-Z]/g, "");
       }
+      // Изменяю текущий статус валюты (поднялась или опустилась)
       if (state.rate === newRate) {
         state.rateState = "equal";
       } else if (state.rate > newRate) {
